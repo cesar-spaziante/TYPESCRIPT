@@ -11,13 +11,40 @@ export class NegociacaoController {
         this.inputValor = document.querySelector('#valor');
     }
     adiciona() {
-        /*Criando um novo registro da modal Negociacao que é do Backend e receberá os dados da app.js
-        que está interagindo com o front capturando os dados do formulario em index.html*/
-        const negociacao = new Negociacao(
-        /*capturando os valores digitados pelos usuários na app.js e atribuindo
-        às propriedades da classe Negociação */
-        this.inputData.value, this.inputQuantidade.value, this.inputValor.value);
+        /*Chamando uma função externa a esta que normliza os dados antes de plotar na console*/
+        const negociacao = this.criaNegociacao();
         /*Mostrando os dados na console do navegador*/
         console.log(negociacao);
+        /*Limpando formulario após o usuário salvar*/
+        this.limparFormulario();
+    }
+    /*Tipando retorno da função*/
+    criaNegociacao() {
+        /*Expressão Regular para capturar todos os traços das datas digitadas*/
+        const exp = /-/g;
+        /*Depois convertemos a string para data de maneira que substituimos os traços encontrados por virgula
+        Pois o construtor Date controi as datas da seguinte maneira new Date(AAAA,MM,DD)*/
+        const date = new Date(this.inputData.value.replace(exp, ','));
+        /*Conversão do valor string de quantidade para inteiro*/
+        const quantidade = parseInt(this.inputQuantidade.value);
+        /*Conversão do valor string de quantidade para float*/
+        const valor = parseFloat(this.inputValor.value);
+        /*Criando um novo registro da modal Negociacao que é do Backend e receberá os dados da app.js
+        que está interagindo com o front capturando os dados do formulario em index.html*/
+        return new Negociacao(
+        /*Capturando os valores digitados pelos usuários na app.js e atribuindo
+        às propriedades da classe Negociação
+        Agora não precisamos mas pegar o valor pois já convertemos as strings do HTML*/
+        date, quantidade, valor);
+    }
+    /* Tipo "void" quer dizer que não retorna nada*/
+    limparFormulario() {
+        /*limpando os valores do formulário*/
+        this.inputData.value = '';
+        this.inputQuantidade.value = '';
+        this.inputValor.value = '';
+        /*Depois de limpar ele ja coloca a interação do usuário para o cadastro de uma nova data
+        deixando a UX melhor*/
+        this.inputData.focus();
     }
 }
