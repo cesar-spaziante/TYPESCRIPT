@@ -1,10 +1,12 @@
 /*Import dos parametros da modal Negociacao não esquecer de colocar o .js*/
 import { Negociacao } from "../models/negociacao.js";
+import { Negociacoes } from "../models/negociacoes.js";
 
 export class NegociacaoController {
     private inputData: HTMLInputElement; /*Criando propriedades privadas da classe*/
     private inputQuantidade: HTMLInputElement; /*Tipagem especifica de elementos do HTML*/
     private inputValor: HTMLInputElement;
+    private negociacoes = new Negociacoes();
 
     constructor(){
 
@@ -20,13 +22,21 @@ export class NegociacaoController {
     }
     adiciona(): void {
         /*Chamando uma função externa a esta que normliza os dados antes de plotar na console*/
-        const negociacao = this.criaNegociacao()
+        const negociacao = this.criaNegociacao();
+
+        /*Chamando metodo adiciona da modal Negociacoes para guardar uma nova negociacao em array*/
+        this.negociacoes.adiciona(negociacao);
+
+        /*O metodo pop faz com que o primeiro item do array seja sempre deletado, o que não queremos
+        Como definimos o nosso array  no metodo lista() da modal de Negociacoes do tipo ReadOnlyArray
+        torna-se impossivel chamar qualquer metodo como o pop() que altera nossa lista
+        this.negociacoes.lista().pop(); */
 
         /*Mostrando os dados na console do navegador*/
-        console.log(negociacao)
+        console.log(this.negociacoes.lista());
 
         /*Limpando formulario após o usuário salvar*/
-        this.limparFormulario()    
+        this.limparFormulario();  
     }
     /*Tipando retorno da função*/
     criaNegociacao(): Negociacao {
