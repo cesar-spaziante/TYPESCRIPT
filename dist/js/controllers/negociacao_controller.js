@@ -15,6 +15,15 @@ export class NegociacaoController {
     adiciona() {
         /*Chamando uma função externa a esta que normliza os dados antes de plotar na console*/
         const negociacao = this.criaNegociacao();
+        /*Apesar da propriedade data estar definida como readonly na classe negociacao esse metodo setDate
+        ainda funciona e altera nosso dado, Vide saide do navegador
+        0: Negociacao
+        data: Sun Nov 12 1111 00:00:00 GMT-0306 (Horário Padrão de Brasília) {}
+        quantidade: 111
+        valor: 111
+        volume: (...)
+        */
+        negociacao.data.setDate(12);
         /*Chamando metodo adiciona da modal Negociacoes para guardar uma nova negociacao em array*/
         this.negociacoes.adiciona(negociacao);
         /*O metodo pop faz com que o primeiro item do array seja sempre deletado, o que não queremos
